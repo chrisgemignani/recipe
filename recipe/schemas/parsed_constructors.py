@@ -1,4 +1,5 @@
 """Convert parsed trees into SQLAlchemy objects """
+
 from datetime import date
 from .builders import SQLAlchemyBuilder
 from lark.exceptions import GrammarError, LarkError
