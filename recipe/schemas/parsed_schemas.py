@@ -1,4 +1,5 @@
 """Shelf config _version="2" supports parsed fields using a lark parser."""
+
 from copy import deepcopy
 from lark.exceptions import LarkError
 import logging
