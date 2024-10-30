@@ -12,50 +12,30 @@ from recipe.utils import FakerAnonymizer, recipe_arg, pad_values
 Base = declarative_base()
 
 
-class RecipeExtension(object):
+class RecipeExtension:
     """
     Recipe extensions plug into the recipe builder pattern and can modify the
     generated query.
 
-    recipe generates a query in the following way
+    The recipe generates a query in the following way:
 
-        (RECIPE) recipe checks if a query has been generated
-
-        (EXTENSIONS) all extension ``add_ingredients`` run to inject
-        ingredients directly on the recipe
-
-        (RECIPE) recipe runs gather_all_ingredients_into_cauldron to build a
-        global lookup for ingredients
-
-        (RECIPE) recipe runs cauldron.brew_query_parts to gather sqlalchemy
-        columns, group_bys and filters
-
-        (EXTENSIONS) all extension ``modify_recipe_parts(recipeparts)`` run to
-        directly modify the collected sqlalchemy columns, group_bys or filters
-
-        (RECIPE) recipe builds a preliminary query with columns
-
-        (RECIPE) recipe builds a full query with group_bys, order_bys,
-        and filters.
-
-        (RECIPE) recipe tests that this query only uses a single from
-
-        (EXTENSIONS) all extension ``modify_postquery_parts(
-        postquery_parts)`` run to modify the query
-
-        (RECIPE) recipe applies limits and offsets on the query
-
-        (RECIPE) recipe caches completed query
-
-    When the recipe fetches data the results will be ``enchanted`` to add
-    fields to the result. ``RecipeExtensions`` can modify result rows with
-
-        enchant_add_fields: Return a tuple of field names to add to a
-        result row
-
-        enchant_row(row): Return a tuple of field values for each row in
-        results.
-
+    1. (RECIPE) recipe checks if a query has been generated.
+    2. (EXTENSIONS) all extension `add_ingredients` run to inject
+       ingredients directly on the recipe.
+    3. (RECIPE) recipe runs `gather_all_ingredients_into_cauldron` to build a
+       global lookup for ingredients.
+    4. (RECIPE) recipe runs `cauldron.brew_query_parts` to gather SQLAlchemy
+       columns, group_bys, and filters.
+    5. (EXTENSIONS) all extension `modify_recipe_parts(recipeparts)` run to
+       directly modify the collected SQLAlchemy columns, group_bys, or filters.
+    6. (RECIPE) recipe builds a preliminary query with columns.
+    7. (RECIPE) recipe builds a full query with group_bys, order_bys,
+       and filters.
+    8. (RECIPE) recipe tests that this query only uses a single from.
+    9. (EXTENSIONS) all extension `modify_postquery_parts(postquery_parts)` run
+       to modify the query.
+    10. (RECIPE) recipe applies limits and offsets on the query.
+    11. (RECIPE) recipe caches the completed query.
     """
 
     def __init__(self, recipe):
