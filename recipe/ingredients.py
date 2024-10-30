@@ -161,7 +161,16 @@ class Ingredient(object):
 
     def describe(self):
         """A string representation of the ingredient."""
-        return f"({self.__class__.__name__}){self.id} {self._stringify()}"
+        string_parts = [
+            "(",
+            str(self.__class__.__name__),
+            ")",
+            str(self.id),
+            " ",
+            self._stringify(),
+            ")",
+        ]
+        return "".join(string_parts)
 
     def _format_value(self, value):
         """Formats value using any stored formatters."""
